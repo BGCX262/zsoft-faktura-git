@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      >
+<ui:composition>
+<!--     <p:menu model="#{applicationBean.menuModel}" style="width:198px" /> -->
+<h:form>
+
+					<p:growl id="messages" />
+
+							
+										<p:menu style="width:198px;">
+											<p:submenu label="Customer">
+												<p:menuitem value="New Customer" url="#{request.servletPath}/newCustomer" icon="ui-icon ui-icon-newwin" />
+												<p:menuitem value="List Customers" url="#{request.servletPath}/listCustomer" icon="ui-icon ui-icon-arrowrefresh-1-w" />
+											</p:submenu>
+											<p:submenu label="Transaction">
+												<p:menuitem value="New Transaction" url="#{request.servletPath}/newTransaction" icon="ui-icon ui-icon-newwin" />
+												<p:menuitem value="List Transaction" url="#{request.servletPath}/listTransaction"
+													icon="ui-icon ui-icon-arrowrefresh-1-w" />
+												<p:menuitem value="Search Transaction" url="#{request.servletPath}/transactionGroup"
+													icon="ui-icon ui-icon-arrowrefresh-1-w" />
+												<p:menuitem value="Canceled Transaction" url="#{request.servletPath}/canceled"
+													icon="ui-icon ui-icon-arrowrefresh-1-w" />	
+											</p:submenu>
+											<p:submenu label="Admin">
+												<p:menuitem value="Admin users" url="#{request.servletPath}/admin" icon="ui-icon ui-icon-home" rendered="#{(userUtils.admin)}" />
+												<p:menuitem value="My profile" url="#{request.servletPath}/myprofile" icon="ui-icon ui-icon-home"  />
+												<p:menuitem icon="ui-icon ui-icon-newwin" value="Log out" url="#{request.servletPath}/logout"  rendered="${not empty currentUser.name}"></p:menuitem>
+											</p:submenu>
+										</p:menu>
+									
+				</h:form>
+</ui:composition>
+</html>

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:security="http://www.springframework.org/schema/security" xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="
+           http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans.xsd
+           http://www.springframework.org/schema/security
+           http://www.springframework.org/schema/security/spring-security.xsd
+           http://www.springframework.org/schema/aop 
+           http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+
+	<bean class="no.zsoft.multitenant.security.TenantSecurityContextFilter" id="tenantFilter" />
+	<!-- <property name="tenantContext" ref="tenantContext"></property> -->
+	<!-- </bean> -->
+	<!-- <bean id="tenantContext" class="no.zsoft.repository.TenantContext" scope="session" > -->
+	<!-- <aop:scoped-proxy /> -->
+	<!-- </bean> -->
+	<!-- Configure Spring Security -->
+	<security:http auto-config="false" use-expressions="true" >
+<!-- 	<security:custom-filter ref="tenantFilter" after="LAST" /> -->
+
+	<security:anonymous />
+	<security:form-login login-page="/app/login" login-processing-url="/app/processloging"
+	default-target-url="/app/welcome" 
+	authentication-failure-url="/app/login?login_error=1" />
+	<security:logout logout-url="/app/logout" logout-success-url="/app/logoutSuccess" />
+
+	<security:intercept-url pattern="/app/movie" method="GET" access="hasRole('ROLE_USER')" />
+
+	<security:access-denied-handler error-page="/app/accessdenied" />
+	</security:http>
+
+<!-- 	<security:http auto-config="false" use-expressions="true" entry-point-ref="LoginUrlAuthenticationEntryPoint" create-session="ifRequired"> -->
+<!-- 	<security:custom-filter ref="tenantSecurityContextFilter" position="FIRST"/> -->
+<!-- 		<security:custom-filter position="FORM_LOGIN_FILTER" ref="tenantSelector" /> -->
+		
+<!-- 		<security:logout logout-url="/app/logout" logout-success-url="/app/logoutSuccess" /> -->
+<!-- 	</security:http> -->
+<!-- <bean class="no.zsoft.faktura.web.TenantSecurityContextFilter" id="tenantSecurityContextFilter"></bean> -->
+<!-- 	<bean id="LoginUrlAuthenticationEntryPoint" class="org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint"> -->
+<!-- 		<property name="loginFormUrl" value="/app/login" /> -->
+
+<!-- 	</bean> -->
+<!-- 	<bean class="no.zsoft.faktura.web.TenantSelector" id="tenantSelector"> -->
+<!-- 		<property name="authenticationManager" ref="authManager" /> -->
+<!-- 		<property name="authenticationSuccessHandler"> -->
+<!-- 			<bean class="no.zsoft.faktura.web.TenantAwareAuthenticationSuccessHandler"> -->
+<!-- 				<property name="defaultTargetUrl" value="/app/welcome" /> -->
+<!-- 				<property name="tenantContext" ref="tenantContext"></property> -->
+<!-- 			</bean> -->
+<!-- 		</property> -->
+<!-- 		<property name="authenticationFailureHandler"> -->
+<!-- 			<bean class="org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler"> -->
+<!-- 				<property name="defaultFailureUrl" value="/app/login?login_error=1"></property> -->
+
+<!-- 			</bean> -->
+<!-- 		</property> -->
+<!-- 	</bean> -->
+<!-- 	<bean id="tenantContext" class="no.zsoft.repository.TenantContext" scope="session"> -->
+<!-- 		<aop:scoped-proxy /> -->
+<!-- 	</bean> -->
+	<security:authentication-manager alias="authManager">
+		<security:authentication-provider>
+
+			<!-- <security:jdbc-user-service data-source-ref="dataSource" -->
+			<!-- users-by-username-query="SELECT user_name,PASSWORD,enabled FROM T_USER WHERE user_name=? " -->
+			<!-- authorities-by-username-query="select u.user_name,ur.authority from T_user_roles urs join t_user u on u.user_name=? join 
+				t_userroles ur on ur.role_id=urs.role_id where urs.user_id=u.user_id" /> -->
+
+			<!-- <security:password-encoder hash="md5" /> -->
+			<security:user-service>
+
+				<security:user name="arash" password="arash" authorities="ROLE_USER, ROLE_SUPERVISOR" />
+				<security:user name="mehdi" password="mehdi" authorities="ROLE_USER, ROLE_SUPERVISOR" />
+				<security:user name="ramid" password="57c6cbff0d421449be820763f03139eb" authorities="ROLE_USER" />
+				<security:user name="scott" password="942f2339bf50796de535a384f0d1af3e" authorities="ROLE_USER" />
+			</security:user-service>
+		</security:authentication-provider>
+	</security:authentication-manager>
+
+</beans>

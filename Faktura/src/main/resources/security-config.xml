@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:security="http://www.springframework.org/schema/security" xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="
+           http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans.xsd
+           http://www.springframework.org/schema/security
+           http://www.springframework.org/schema/security/spring-security.xsd
+           http://www.springframework.org/schema/aop 
+           http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+	<security:http auto-config="false" use-expressions="true">
+		<security:form-login login-page="/app/login" login-processing-url="/app/processlogin" default-target-url="/app/welcome"
+			authentication-failure-url="/app/login?login_error=1" />
+		<security:logout logout-url="/app/logout" logout-success-url="/app/logoutSuccess" />
+
+		<security:intercept-url pattern="/app/movie" method="GET" access="hasRole('ROLE_USER')" />
+
+		<security:access-denied-handler error-page="/app/accessdenied" />
+	</security:http>
+
+
+	<security:authentication-manager alias="authManager">
+		<security:authentication-provider>
+			<security:user-service>
+				<security:user name="arash" password="arash" authorities="ROLE_USER, ROLE_SUPERVISOR" />
+				<security:user name="mehdi" password="mehdi" authorities="ROLE_USER, ROLE_SUPERVISOR" />
+				<security:user name="ramid" password="57c6cbff0d421449be820763f03139eb" authorities="ROLE_USER" />
+				<security:user name="scott" password="942f2339bf50796de535a384f0d1af3e" authorities="ROLE_USER" />
+			</security:user-service>
+		</security:authentication-provider>
+	</security:authentication-manager>
+
+</beans>
