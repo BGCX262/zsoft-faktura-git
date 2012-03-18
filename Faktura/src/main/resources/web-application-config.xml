@@ -10,7 +10,7 @@
 	
 	<!-- Scans for application @Components to deploy -->
 	<context:component-scan base-package="no.zsoft" />
-
+<context:property-placeholder  location="classpath:jdbc.properties" />
 	<!-- Imports the configurations of the different infrastructure systems 
 		of the application -->
 	<import resource="webmvc-config.xml" />

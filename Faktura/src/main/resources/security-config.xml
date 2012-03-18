@@ -21,14 +21,31 @@
 
 
 	<security:authentication-manager alias="authManager">
-		<security:authentication-provider>
-			<security:user-service>
-				<security:user name="arash" password="arash" authorities="ROLE_USER, ROLE_SUPERVISOR" />
-				<security:user name="mehdi" password="mehdi" authorities="ROLE_USER, ROLE_SUPERVISOR" />
-				<security:user name="ramid" password="57c6cbff0d421449be820763f03139eb" authorities="ROLE_USER" />
-				<security:user name="scott" password="942f2339bf50796de535a384f0d1af3e" authorities="ROLE_USER" />
-			</security:user-service>
+		<security:authentication-provider user-service-ref="tenantAwareUserDetailService">
+			<!-- <security:user-service> -->
+			<!-- <security:user name="arash" password="arash" authorities="ROLE_USER, ROLE_SUPERVISOR" /> -->
+			<!-- <security:user name="mehdi" password="mehdi" authorities="ROLE_USER, ROLE_SUPERVISOR" /> -->
+			<!-- <security:user name="ramid" password="57c6cbff0d421449be820763f03139eb" authorities="ROLE_USER" /> -->
+			<!-- <security:user name="scott" password="942f2339bf50796de535a384f0d1af3e" authorities="ROLE_USER" /> -->
+			<!-- </security:user-service> -->
 		</security:authentication-provider>
 	</security:authentication-manager>
+	<bean class="no.zsoft.multitenant.security.TenantAwareUserDetailService" id="tenantAwareUserDetailService">
+		<property name="dataSource">
+			<bean class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" >
+				<property name="driverClassName" value="${jdbc.driverClassName}" />
+				<property name="url" value="${jdbc.url.app}" />
+				<property name="username" value="${jdbc.username}" />
+				<property name="password" value="${jdbc.password}" />
+				<property name="testOnBorrow" value="true" />
+				<property name="testOnReturn" value="true" />
+				<property name="testWhileIdle" value="true" />
+				<property name="timeBetweenEvictionRunsMillis" value="1800000" />
+				<property name="numTestsPerEvictionRun" value="3" />
+				<property name="minEvictableIdleTimeMillis" value="1800000" />
+				<property name="validationQuery" value="SELECT 1" />
+			</bean>
+		</property>
 
+	</bean>
 </beans>

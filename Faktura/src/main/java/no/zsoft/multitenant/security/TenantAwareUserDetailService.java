@@ -26,20 +26,18 @@ public class TenantAwareUserDetailService extends JdbcDaoSupport implements User
 
 	  //~ Static fields/initializers =====================================================================================
 
-    public static final String DEF_USERS_BY_USERNAME_QUERY =
-            "select username,password,enabled " +
-            "from users " +
-            "where username = ? and tenantId=?";
-    public static final String DEF_AUTHORITIES_BY_USERNAME_QUERY =
-            "select username,authority " +
-            "from authorities " +
-            "where username = ? and tenantId=?";
-    public static final String DEF_GROUP_AUTHORITIES_BY_USERNAME_QUERY =
-            "select g.id, g.group_name, ga.authority " +
-            "from groups g, group_members gm, group_authorities ga " +
-            "where gm.username = ? " +
-            "and g.id = ga.group_id " +
-            "and g.id = gm.group_id";
+	public static final String DEF_USERS_BY_USERNAME_QUERY = "SELECT user_name,PASSWORD,enabled FROM T_USER WHERE user_name=? and tenant=?";
+	
+	public static final String DEF_AUTHORITIES_BY_USERNAME_QUERY = 
+			"select u.user_name,ur.authority from T_user_roles urs " +
+			"join t_user u on u.user_name=? and u.tenant=? " +
+			"join t_roles ur on ur.role_id=urs.role_id " +
+			"where urs.user_id=u.user_id";
+	public static final String DEF_GROUP_AUTHORITIES_BY_USERNAME_QUERY = "select g.id, g.group_name, ga.authority "
+			+ "from groups g, group_members gm, group_authorities ga "
+			+ "where gm.username = ? "
+			+ "and g.id = ga.group_id "
+			+ "and g.id = gm.group_id";
 
     //~ Instance fields ================================================================================================
 
